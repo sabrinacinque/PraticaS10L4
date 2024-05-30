@@ -1,4 +1,3 @@
-
 <div *ngIf="arrPhotos.length === 0" class="alert alert-info">
   Caricamento in corso
 </div>
@@ -12,7 +11,9 @@
         <h5 class="card-title"><br>{{ photo.title }}</h5>
         <p class="card-text">{{ photo.id }}</p>
         <button class="btn btn-danger me-3" (click)="delete(photo.id)">Elimina</button>
-        <button class="btn btn-primary" (click)="addToFavorites()">Mi piace</button>
+        <button class="btn btn-primary" (click)="addToFavorites(photo)">
+          {{ isFavorite(photo.id) ? 'Non mi piace più' : 'Mi piace' }}
+        </button>
       </div>
     </div>
   </div>

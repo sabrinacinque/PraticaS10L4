@@ -1,51 +1,50 @@
 import { PhotoService } from './../photo.service';
 import { iPhoto } from './../Modules/iphotos';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
-  styleUrl: './homepage.component.scss'
+  styleUrls: ['./homepage.component.scss']
 })
-export class HomepageComponent {
+export class HomepageComponent implements OnInit {
 
-  arrPhotos: iPhoto [] = [];
-  arrFavorites: iPhoto [] = [];
-  favoritesCount: number = 0;
+  arrPhotos: iPhoto[] = [];
+  arrFavorites: iPhoto[] = [];
   likesCount: number = 0;
 
+  constructor(private photoSvc: PhotoService) {}
 
-  constructor(private photoSvc:PhotoService){}
-
-  ngOnInit(){
+  ngOnInit() {
     this.photoSvc.getAll().subscribe(photo => {
-      this.arrPhotos = photo
-    })
+      this.arrPhotos = photo;
+    });
 
     this.photoSvc.likes$.subscribe(likesCount => {
       this.likesCount = likesCount;
-     })
+    });
   }
 
-  delete(id:number){
-    this.photoSvc.delete(id).subscribe(()=>{
-
-      this.arrPhotos = this.arrPhotos.filter(p => p.id != id)//dopo che il server ha eliminato la pizza, se non scompare devo procedere ad eliminarla manualmente dall'array, così che l'utente veda la schermata aggiornarsi
-
-      console.log('pizza eliminata')
-      //qui inserisco operazioni di notifica all'utente per fargli capire che l'operazione è andata a buon fine
-    })
+  delete(id: number) {
+    this.photoSvc.delete(id).subscribe(() => {
+      this.arrPhotos = this.arrPhotos.filter(p => p.id !== id);
+      console.log('Foto eliminata');
+    });
   }
 
-  addToFavorites() {
-    this.photoSvc.addLike();
+  addToFavorites(photo: iPhoto) {
+    if (this.isFavorite(photo.id)) {
+      this.photoSvc.removeLike(photo.id);
+      this.arrFavorites = this.arrFavorites.filter(fav => fav.id !== photo.id);
+      console.log(this.arrFavorites,"tolgo dai favoriti")
+    } else {
+      this.photoSvc.addLike(photo);
+      this.arrFavorites.push(photo);
+      console.log(this.arrFavorites,"metto tra i favoriti")
+    }
   }
 
-
-  updateCounts() {
-    this.favoritesCount = this.photoSvc.getFavoritesCount();
-    this.arrFavorites = this.photoSvc.getFavorites();
-
+  isFavorite(photoId: number): boolean {
+    return this.arrFavorites.some(photo => photo.id === photoId);
   }
-
 }
