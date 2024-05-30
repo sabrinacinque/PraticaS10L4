@@ -8,7 +8,7 @@
   <div class="col my-5" *ngFor="let photo of arrPhotos">
     <div class="card border-black mx-auto" style="width: 28rem; position: relative;">
       <div class="card-body text-center">
-        <img class="card-img-top" [src]="photo.url" alt="Card image cap">
+        <img class="card-img-top" [src]="photo.thumbnailUrl" alt="Card image cap">
         <h5 class="card-title"><br>{{ photo.title }}</h5>
         <p class="card-text">{{ photo.id }}</p>
         <button class="btn btn-danger me-3" (click)="delete(photo.id)">Elimina</button>
