@@ -2,7 +2,7 @@
 <div *ngIf="arrPhotos.length === 0" class="alert alert-info">
   Caricamento in corso
 </div>
-<h1>Totale foto favorite :{{arrFavorites.length}} </h1>
+<h1>Totale foto favorite :{{likesCount}} </h1>
 
 <div class="row row-cols-1 row-cols-lg-3" *ngIf="arrPhotos.length > 0">
   <div class="col my-5" *ngFor="let photo of arrPhotos">
@@ -12,7 +12,7 @@
         <h5 class="card-title"><br>{{ photo.title }}</h5>
         <p class="card-text">{{ photo.id }}</p>
         <button class="btn btn-danger me-3" (click)="delete(photo.id)">Elimina</button>
-        <button class="btn btn-primary" (click)="addToFavorites(photo)">Mi piace</button>
+        <button class="btn btn-primary" (click)="addToFavorites()">Mi piace</button>
       </div>
     </div>
   </div>

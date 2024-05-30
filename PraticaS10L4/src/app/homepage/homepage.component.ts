@@ -12,6 +12,7 @@ export class HomepageComponent {
   arrPhotos: iPhoto [] = [];
   arrFavorites: iPhoto [] = [];
   favoritesCount: number = 0;
+  likesCount: number = 0;
 
 
   constructor(private photoSvc:PhotoService){}
@@ -20,6 +21,10 @@ export class HomepageComponent {
     this.photoSvc.getAll().subscribe(photo => {
       this.arrPhotos = photo
     })
+
+    this.photoSvc.likes$.subscribe(likesCount => {
+      this.likesCount = likesCount;
+     })
   }
 
   delete(id:number){
@@ -32,9 +37,8 @@ export class HomepageComponent {
     })
   }
 
-  addToFavorites(product: iPhoto) {
-    this.photoSvc.addToFavorites(product);
-    this.updateCounts();
+  addToFavorites() {
+    this.photoSvc.addLike();
   }
 
 
